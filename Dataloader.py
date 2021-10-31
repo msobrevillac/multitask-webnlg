@@ -23,18 +23,16 @@ class WebnlgDataset(Dataset):
 	def __getitem__(self, index):
 
 		str_source = str(self.source[index]).strip()
-		if self.pretrained.endswith("t5"):
-			source = self.tokenizer.batch_encode_plus([str_source], max_length= self.source_len, 
-				pad_to_max_length=True, return_tensors='pt', truncation=True)
+		source = self.tokenizer.batch_encode_plus([str_source], max_length= self.source_len, 
+			pad_to_max_length=True, return_tensors='pt', truncation=True)
 
 		source_ids = source['input_ids'].squeeze()
 		source_mask = source['attention_mask'].squeeze()
 
 		if self.target is not None:
-			if self.pretrained.endswith("t5"):
-				str_target = "<pad> " + str(self.target[index]).strip()
-				target = self.tokenizer.batch_encode_plus([str_target], max_length= self.target_len,
-					pad_to_max_length=True, return_tensors='pt', truncation=True)
+			str_target = "<pad> " + str(self.target[index]).strip()
+			target = self.tokenizer.batch_encode_plus([str_target], max_length= self.target_len,
+				pad_to_max_length=True, return_tensors='pt', truncation=True)
 
 			target_ids = target['input_ids'].squeeze()
 			target_mask = target['attention_mask'].squeeze()
@@ -63,4 +61,3 @@ def process_data(src_path, tgt_path=None, prefix="Generate from webnlg:"):
 			return pd.DataFrame({'source': src, 'target': tgt})
 	else:
 		return pd.DataFrame({'source': src})
-
