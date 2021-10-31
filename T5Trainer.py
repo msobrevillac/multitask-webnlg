@@ -140,9 +140,10 @@ def main(args):
 
 	device = torch.device('cuda' if torch.cuda.is_available() and args.gpu else 'cpu')
 
-	df_train = process_data(args.train_source, args.train_target)
-	df_dev = process_data(args.dev_source, args.dev_target)
-	df_test = process_data(args.test_source)
+	prefix = "Generate from webnlg:"
+	df_train = process_data(args.train_source, args.train_target, prefix)
+	df_dev = process_data(args.dev_source, args.dev_target, prefix)
+	df_test = process_data(args.test_source, prefix)
 
 
 	tokenizer = T5Tokenizer.from_pretrained(args.model)
